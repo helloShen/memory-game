@@ -1,0 +1,24 @@
+@import url('./norm.css');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;700&family=Roboto:wght@100;400;700&display=swap');
+
+:root {
+	--black: #24292d;
+	--black-dimmer: #2b3137;
+	--gray: #58606a;
+	--light-gray: #949da7;
+	--lighter-gray: #b4bdc8;
+	--border-gray: #e7e9ea;
+	--back-gray: #f6f8fa;
+	--white: #ffffff;
+	--red: #db2c00;
+	--green: #2da44e;
+	--blue: #0d74e7;
+	--blue2: #0969da;
+	--purple: #6e5494;
+}
+
+.root {
+	min-height: 100vh;
+	background-color: var(--back-gray);
+}
