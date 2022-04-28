@@ -16,9 +16,12 @@
 	--blue: #0d74e7;
 	--blue2: #0969da;
 	--purple: #6e5494;
+  --react-gray: #282c34;
+  --react-blue: #61dafb;
+  --react-white: white;
 }
 
 .root {
 	min-height: 100vh;
-	background-color: var(--back-gray);
+	background-color: var(--back-gray); 
 }

@@ -1,3 +1,5 @@
+/* eslint-disable prefer-template */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -5,13 +7,18 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable no-use-before-define */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Data from './data';
-import './App.css';
+import '../css/App.css';
+import Footer from '../footer/footer';
+import CorrectAudioSrc from '../assets/audio/correct.wav';
+import FailAudioSrc from '../assets/audio/fail.wav';
 
 const gameSize = 16;
 let history = [];
 let notHistory = getNotHistory();
+const correctAudio = new Audio(CorrectAudioSrc);
+const failAudio = new Audio(FailAudioSrc);
 
 function getNotHistory() {
   return Data
@@ -75,15 +82,25 @@ export default function App() {
   const [images, setImages] = useState(randomize());
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    setDisabled(false);
+  }, [images]);
 
   function handleClick(e) {
+    setDisabled(true);
     const { id } = e.target;
     if (history.includes(id)) {
+      failAudio.currentTime = 0;
+      failAudio.play();
       if (score > bestScore) setBestScore(score);
       setScore(0);
       history = [];
       notHistory = getNotHistory();
     } else {
+      correctAudio.currentTime = 0;
+      correctAudio.play();
       setScore(score + 1);
       history.push(
         notHistory.splice(
@@ -95,34 +112,48 @@ export default function App() {
     setImages(randomize());
   }
 
+  const cardsClassName = 'cards ' + ((disabled) ? 'disabled' : '');
   return (
-    <>
-      <div key="bestScore" className="bestscore">
-        {'Best score: '}
-        {bestScore}
-      </div>
-      <div key="score" className="score">
-        {'Score: '}
-        {score}
+    <div className="main">
+      <div className="board">
+        <div className="hero">
+          <div className="title">LOL Memory Game</div>
+          <div className="sub-title">Powered by React</div>
+          <div className="description">The images get shuffled every-time they are clicked. You CAN NOT click on any image more than once or else your score resets to zero. The main objective is to get the highest score as possible.</div>
+        </div>
+        <div className="statistics">
+          <div key="bestScore" className="bestscore">
+            {'Best score: '}
+            {bestScore}
+          </div>
+          <div key="score" className="score">
+            {'Score: '}
+            {score}
+          </div>
+        </div>
+        <Footer
+          sourceCode="https://github.com/helloShen/#"
+          githubLogo="black"
+        />
       </div>
       <Cards
         key="cards"
+        cardsClassName={cardsClassName}
         images={images}
-        score={score}
-        bestScore={bestScore}
         handleClick={handleClick}
       />
-    </>
+    </div>
   );
 }
 
 function Cards({
+  cardsClassName,
   images,
   handleClick,
 }) {
   let id = 0;
   return (
-    <div className="cards">
+    <div className={cardsClassName}>
       {images.map((image) => (
         <Card
           key={id++}
@@ -135,16 +166,16 @@ function Cards({
 }
 
 function Card({ image, handleClick }) {
+  const style = {
+    backgroundImage: `url(${image.src})`,
+  };
+
   return (
     <div
+      id={image.id}
       className="card"
+      style={style}
       onClick={handleClick}
-    >
-      <img
-        id={image.id}
-        src={image.src}
-        alt={`${image.id}.jpg`}
-      />
-    </div>
+    />
   );
 }
