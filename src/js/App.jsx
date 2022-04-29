@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable prefer-template */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-param-reassign */
@@ -95,7 +96,7 @@ export default function App() {
     setDisabled(true);
     const { id } = e.target;
     if (history.includes(id)) {
-      sadEffect(rippleEffect(e, SadImg));
+      sadEffect(e, SadImg);
       failAudio.currentTime = 0;
       failAudio.play();
       if (score > bestScore) setBestScore(score);
@@ -103,7 +104,7 @@ export default function App() {
       history = [];
       notHistory = getNotHistory();
     } else {
-      coinEffect(rippleEffect(e, PlusOneImg));
+      happyEffect(e, PlusOneImg);
       correctAudio.currentTime = 0;
       correctAudio.play();
       setScore(score + 1);
@@ -117,14 +118,12 @@ export default function App() {
     setImages(randomize());
   }
 
-  function rippleEffect(e, img) {
-    const x = e.clientX - e.target.offsetLeft;
-    const y = e.clientY - e.target.offsetTop;
+  function sadEffect(e, img) {
     const ripple = document.createElement('div');
     ripple.classList.add('ripple');
-    // ripple.classList.add('coin');
-    ripple.style.left = x + 'px';
-    ripple.style.top = y + 'px';
+    ripple.classList.add('sad');
+    ripple.style.left = e.target.offsetWidth / 2 + 'px';
+    ripple.style.top = e.target.offsetHeight / 2 + 'px';
     ripple.style.backgroundImage = `url(${img})`;
     ripple.style.backgroundSize = 'contain';
     ripple.addEventListener('animationend', () => removeEffect(ripple));
@@ -132,12 +131,19 @@ export default function App() {
     return ripple;
   }
 
-  function sadEffect(target) {
-    target.classList.add('sad');
-  }
-
-  function coinEffect(target) {
-    target.classList.add('coin');
+  function happyEffect(e, img) {
+    const x = e.clientX - e.target.offsetLeft;
+    const y = e.clientY - e.target.offsetTop;
+    const ripple = document.createElement('div');
+    ripple.classList.add('ripple');
+    ripple.classList.add('coin');
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    ripple.style.backgroundImage = `url(${img})`;
+    ripple.style.backgroundSize = 'contain';
+    ripple.addEventListener('animationend', () => removeEffect(ripple));
+    e.target.appendChild(ripple);
+    return ripple;
   }
 
   function removeEffect(ripple) {
@@ -150,7 +156,7 @@ export default function App() {
       <div className="board">
         <div className="hero">
           <div className="title">LOL Memory Game</div>
-          <div className="sub-title">Powered by React</div>
+          <div className="sub-title">Powered by <span className="strong">React</span></div>
           <div className="description">The images get shuffled every-time they are clicked. You CAN NOT click on any image more than once or else your score resets to zero. So where is your limit?</div>
         </div>
         <div className="statistics">
