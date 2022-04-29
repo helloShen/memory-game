@@ -13,6 +13,9 @@ import '../css/App.css';
 import Footer from '../footer/footer';
 import CorrectAudioSrc from '../assets/audio/correct.wav';
 import FailAudioSrc from '../assets/audio/fail.wav';
+import PlusOneImg from '../assets/img/plus-one.png';
+// import CoinImg from '../assets/img/coin.png';
+import SadImg from '../assets/img/sad.png';
 
 const gameSize = 30;
 let history = [];
@@ -92,6 +95,7 @@ export default function App() {
     setDisabled(true);
     const { id } = e.target;
     if (history.includes(id)) {
+      sadEffect(rippleEffect(e, SadImg));
       failAudio.currentTime = 0;
       failAudio.play();
       if (score > bestScore) setBestScore(score);
@@ -99,6 +103,7 @@ export default function App() {
       history = [];
       notHistory = getNotHistory();
     } else {
+      coinEffect(rippleEffect(e, PlusOneImg));
       correctAudio.currentTime = 0;
       correctAudio.play();
       setScore(score + 1);
@@ -110,6 +115,33 @@ export default function App() {
       );
     }
     setImages(randomize());
+  }
+
+  function rippleEffect(e, img) {
+    const x = e.clientX - e.target.offsetLeft;
+    const y = e.clientY - e.target.offsetTop;
+    const ripple = document.createElement('div');
+    ripple.classList.add('ripple');
+    // ripple.classList.add('coin');
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    ripple.style.backgroundImage = `url(${img})`;
+    ripple.style.backgroundSize = 'contain';
+    ripple.addEventListener('animationend', () => removeEffect(ripple));
+    e.target.appendChild(ripple);
+    return ripple;
+  }
+
+  function sadEffect(target) {
+    target.classList.add('sad');
+  }
+
+  function coinEffect(target) {
+    target.classList.add('coin');
+  }
+
+  function removeEffect(ripple) {
+    ripple.remove();
   }
 
   const cardsClassName = 'cards ' + ((disabled) ? 'disabled' : '');

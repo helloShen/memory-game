@@ -96,20 +96,82 @@
 }
 
 .card {
+  position: relative;
   aspect-ratio: 1;
   /* border: 1px solid white; */
   background-position: center;
   background-size: 100%;
-  box-shadow: 0px 3px 1px -2px #00000033,
+  /* box-shadow: 0px 3px 1px -2px #00000033,
     0px 2px 2px #00000022,
-    0px 1px 5px #00000022;
+    0px 1px 5px #00000022; */
 }
 
 .card:hover {
   opacity: .8;
   background-size: 125%;
-  transform: scale(1);
   transition: .25s ease-out;
+}
+
+.ripple {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.ripple.coin {
+  animation: coin-animation 1.5s linear;
+}
+
+.ripple.sad {
+  animation: sad-animation 1.5s linear;
+}
+
+.ripple > img {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes coin-animation {
+  0% {
+    transform: translate(0px, 0px);
+    width: 0;
+    height: 0;
+  }
+  20% {
+    transform: translate(-32px, -48px);
+    width: 4rem;
+    height: 4rem;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-32px, -72px);
+    opacity: 0;
+  }
+}
+
+@keyframes sad-animation {
+  0% {
+    width: 0;
+    height: 0;
+  }
+  20% {
+    width: 4rem;
+    height: 4rem;
+  }
+  70% {
+    width: 4rem;
+    height: 4rem;
+    opacity: 1;
+  }
+  100% {
+    width: 0rem;
+    height: 0rem;
+    opacity: 0;
+  }
 }
 
 .footer.footer-custom {
