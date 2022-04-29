@@ -14,7 +14,7 @@ import Footer from '../footer/footer';
 import CorrectAudioSrc from '../assets/audio/correct.wav';
 import FailAudioSrc from '../assets/audio/fail.wav';
 
-const gameSize = 16;
+const gameSize = 30;
 let history = [];
 let notHistory = getNotHistory();
 const correctAudio = new Audio(CorrectAudioSrc);
@@ -119,29 +119,35 @@ export default function App() {
         <div className="hero">
           <div className="title">LOL Memory Game</div>
           <div className="sub-title">Powered by React</div>
-          <div className="description">The images get shuffled every-time they are clicked. You CAN NOT click on any image more than once or else your score resets to zero. The main objective is to get the highest score as possible.</div>
+          <div className="description">The images get shuffled every-time they are clicked. You CAN NOT click on any image more than once or else your score resets to zero. So where is your limit?</div>
         </div>
         <div className="statistics">
-          <div key="bestScore" className="bestscore">
-            {'Best score: '}
-            {bestScore}
-          </div>
-          <div key="score" className="score">
+          <div key="score-label" className="score">
             {'Score: '}
+          </div>
+          <div key="score-value" className="score">
             {score}
+          </div>
+          <div key="bestScore-label" className="bestscore">
+            {'Best score: '}
+          </div>
+          <div key="bestScore-value" className="bestscore">
+            {bestScore}
           </div>
         </div>
         <Footer
-          sourceCode="https://github.com/helloShen/#"
+          sourceCode="https://github.com/helloShen/memory-game"
           githubLogo="black"
         />
       </div>
-      <Cards
-        key="cards"
-        cardsClassName={cardsClassName}
-        images={images}
-        handleClick={handleClick}
-      />
+      <div className="cards-container">
+        <Cards
+          key="cards"
+          cardsClassName={cardsClassName}
+          images={images}
+          handleClick={handleClick}
+        />
+      </div>
     </div>
   );
 }
